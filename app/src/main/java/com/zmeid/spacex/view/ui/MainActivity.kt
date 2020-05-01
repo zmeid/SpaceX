@@ -1,16 +1,19 @@
 package com.zmeid.spacex.view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.squareup.picasso.Picasso
 import com.zmeid.spacex.R
 import com.zmeid.spacex.databinding.ActivityMainBinding
 import com.zmeid.spacex.model.Launch
 import com.zmeid.spacex.util.ApiResponseWrapper
 import com.zmeid.spacex.util.ErrorMessageGenerator
+import com.zmeid.spacex.util.LAUNCH_OBJECT_INTENT_TAG
 import com.zmeid.spacex.view.adapter.LaunchAdapter
 import com.zmeid.spacex.view.adapter.OnItemClickListener
 import com.zmeid.spacex.viewmodel.MainActivityViewModel
@@ -18,27 +21,22 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [MainActivity] is the only activity of the application.
+ * Communicates with [MainActivityViewModel].
  *
- * View binding is enabled. Communicates with [MainActivityViewModel].
+ * View binding is enabled.
  */
 class MainActivity : BaseActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject
-    lateinit var viewModelProviderFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var layoutManager: LinearLayoutManager
-
-    @Inject
-    lateinit var launchAdapter: LaunchAdapter
-
-    @Inject
-    lateinit var errorMessageGenerator: ErrorMessageGenerator
+    @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+    @Inject lateinit var layoutManager: LinearLayoutManager
+    @Inject lateinit var launchAdapter: LaunchAdapter
+    @Inject lateinit var errorMessageGenerator: ErrorMessageGenerator
+    @Inject lateinit var picasso: Picasso
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainActivityViewModel: MainActivityViewModel
+    private var isMasterDetailFlow = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,18 +45,31 @@ class MainActivity : BaseActivity(), View.OnClickListener,
         val view = binding.root
         setContentView(view)
 
+        // region Recyclerview init
         binding.launchListHolder.recyclerviewLaunch.layoutManager = layoutManager
         binding.launchListHolder.recyclerviewLaunch.adapter = launchAdapter
         setAdapterItemClickListener()
+        // endregion
 
         binding.launchListHolder.buttonRetry.setOnClickListener(this)
 
         binding.launchListHolder.swipeRefreshLayout.setOnRefreshListener(this)
 
+        // region ViewModel init
         mainActivityViewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(MainActivityViewModel::class.java)
         mainActivityViewModel.getLaunches(false)
         observeLaunchApiResponse()
+        // endregion
+
+        binding.apply {
+            launchListDetailsHolder?.let {
+                // if launchListDetailsHolder is not null, it means we are on large device landscape mode.
+                it.launchDetailsContainer.visibility = View.GONE
+                it.textViewClickMissionToSeeDetails.visibility = View.VISIBLE
+                isMasterDetailFlow = true
+            }
+        }
     }
 
     /**
@@ -105,7 +116,7 @@ class MainActivity : BaseActivity(), View.OnClickListener,
     }
 
     /**
-     * Shows a message to user in the center of activity.
+     * Shows a message to user in the center of launch recyclerview.
      */
     private fun showUserMessage(message: String) {
         binding.launchListHolder.textViewUserMessage.apply {
@@ -143,12 +154,21 @@ class MainActivity : BaseActivity(), View.OnClickListener,
     }
 
     /**
-     * Catches clicks on share and play sound buttons.
+     * Catches clicks on recyclerview rows.
      */
     private fun setAdapterItemClickListener() {
         launchAdapter.setOnItemClickedListener(object : OnItemClickListener {
             override fun onLaunchClicked(launch: Launch) {
                 Timber.d("LAUNCH API RESPONSE: \n $launch")
+                Timber.d("is TWO_PANE: $isMasterDetailFlow")
+
+                if (isMasterDetailFlow) {
+                    setLaunchDetails(binding.launchListDetailsHolder!!, launch)
+                } else {
+                    val intent = Intent(this@MainActivity, LaunchDetailsActivity::class.java)
+                    intent.putExtra(LAUNCH_OBJECT_INTENT_TAG, launch)
+                    startActivity(intent)
+                }
             }
         })
     }

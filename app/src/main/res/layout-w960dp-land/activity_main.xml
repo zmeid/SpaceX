@@ -10,7 +10,7 @@
     android:showDividers="middle">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="400dp"
         android:layout_height="match_parent">
 
         <include
@@ -24,8 +24,9 @@
         android:layout_height="match_parent"
         android:layout_weight="3">
 
-        <include layout="@layout/launch_details" />
-
+        <include
+            android:id="@+id/launch_list_details_holder"
+            layout="@layout/launch_details" />
     </LinearLayout>
 
 </LinearLayout>

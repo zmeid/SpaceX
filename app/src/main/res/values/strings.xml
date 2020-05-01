@@ -1,8 +1,20 @@
 <resources>
     <string name="app_name">SpaceX</string>
+    <string name="click_mission_to_see_details">Click mission to see details…</string>
+
+    <!-- region launch details -->
     <string name="rocket_name_tag">Rocket name:</string>
+    <string name="rocket_type_tag">Rocket type:</string>
+    <string name="rocket_id_tag">Rocket id:</string>
     <string name="launch_site_name_tag">Launch site name:</string>
+    <string name="launch_site_id_tag">Launch site id:</string>
+    <string name="launch_site_name_long_tag">Launch site long name:</string>
     <string name="launch_date_tag">Launch Date:</string>
+    <string name="mission_details_tag">Mission details:</string>
+    <string name="flight_number_tag">Flight number:</string>
+    <string name="launch_success_tag">Launch success:</string>
+    <string name="mission_name_tag">Mission name:</string>
+    <!-- endregion -->
 
     <!-- region searchErrors -->
     <string name="api_response_empty">API returned empty response :(</string>

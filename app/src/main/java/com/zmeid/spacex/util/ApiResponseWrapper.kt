@@ -1,8 +1,8 @@
 package com.zmeid.spacex.util
 
 /**
- * [ApiResponseWrapper] is used to wrap all API responses. It has enum class [Status] which tells us the current status of the API call. When the call is made and waiting for response, the [Status] is [Status.LOADING], when response is success [Status.SUCCESS] and if api call fails it is [Status.ERROR].
- *
+ * [ApiResponseWrapper] is used to wrap all API responses. It has enum class [Status] which tells us the current status of the API call.
+ * When the call is made and waiting for response, the [Status] is [Status.LOADING], when response is success [Status.SUCCESS] and if api call fails it is [Status.ERROR].
  */
 data class ApiResponseWrapper<out T>(val status: Status, val data: T?, val exception: Exception?) {
 

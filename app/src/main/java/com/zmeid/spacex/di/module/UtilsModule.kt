@@ -1,6 +1,7 @@
 package com.zmeid.spacex.di.module
 
 import android.app.Activity
+import android.app.Application
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.zmeid.spacex.R
@@ -17,5 +18,7 @@ class UtilsModule {
     fun providesLayoutManager(context: Activity) = LinearLayoutManager(context)
 
     @Provides
-    fun providesApiErrorMessageGenerator(context: Activity) = ErrorMessageGenerator(context)
+    fun providesPicasso(app: Application) = Picasso.Builder(app)
+        .loggingEnabled(true)
+        .build()
 }

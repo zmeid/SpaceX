@@ -1,5 +1,6 @@
 package com.zmeid.spacex.view.adapter
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -18,8 +19,11 @@ import javax.inject.Inject
  *
  * It has [OnItemClickListener] to provide click listener for each row.
  */
-class LaunchAdapter @Inject constructor() :
+class LaunchAdapter @Inject constructor(private val context: Activity) :
     ListAdapter<Launch, LaunchAdapter.LaunchViewHolder>(LaunchListDiffCallback()) {
+
+    private var selectedItemFlightNumber = -1
+    private var previousSelectedItemPosition: Int? = null
 
     private var listener: OnItemClickListener? = null
 
@@ -44,15 +48,12 @@ class LaunchAdapter @Inject constructor() :
             Picasso.get()
                 .load(launch.launchLink.missionPatchSmall) // For circle image, use small patch url to save bandwidth.
                 .apply {
-                    placeholder(R.drawable.ic_android)
-                    fit()
+                    placeholder(R.drawable.loading_anim)
                     into(holder.binding.circleImageViewLaunchPatch)
                 }
         }
 
-        holder.binding.root.setOnClickListener {
-            listener?.onLaunchClicked(launch)
-        }
+        handleHighlightingAndSetClickListener(launch, holder.binding, position)
     }
 
     class LaunchViewHolder(val binding: LaunchRowBinding) :
@@ -63,6 +64,34 @@ class LaunchAdapter @Inject constructor() :
             binding.textViewRocketName.text = launch.rocket.rocketName
             binding.textViewLaunchSiteName.text = launch.launchSite.siteName
             binding.textViewLaunchDate.text = launch.launchDate.toString()
+        }
+    }
+
+    /**
+     * Handles highlighting logic and sets listener for each row. It highlights clicked row and removes highlight from the previous highlighted row.
+     */
+    private fun handleHighlightingAndSetClickListener(
+        launch: Launch,
+        binding: LaunchRowBinding,
+        position: Int
+    ) {
+        binding.apply {
+
+            if (launch.flightNumber == selectedItemFlightNumber) {
+                cardViewLaunch.setCardBackgroundColor(
+                    context.getColor(R.color.colorHighlightAdapter)
+                )
+            } else cardViewLaunch.setCardBackgroundColor(context.getColor(android.R.color.white))
+
+            root.setOnClickListener {
+                selectedItemFlightNumber = launch.flightNumber
+                notifyItemChanged(position)
+                previousSelectedItemPosition?.let {
+                    notifyItemChanged(it)
+                }
+                previousSelectedItemPosition = position
+                listener?.onLaunchClicked(launch)
+            }
         }
     }
 }
