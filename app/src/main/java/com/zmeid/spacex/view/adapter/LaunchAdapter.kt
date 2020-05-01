@@ -48,7 +48,7 @@ class LaunchAdapter @Inject constructor(private val context: Activity) :
             Picasso.get()
                 .load(launch.launchLink.missionPatchSmall) // For circle image, use small patch url to save bandwidth.
                 .apply {
-                    placeholder(R.drawable.loading_anim)
+                    placeholder(R.drawable.ic_android)
                     into(holder.binding.circleImageViewLaunchPatch)
                 }
         }

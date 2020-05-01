@@ -55,19 +55,19 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
             // region Image load
             Picasso.get().load(launch.launchLink.missionPatch)
                 .apply {
-                    placeholder(R.drawable.loading_anim)
+                    placeholder(R.drawable.ic_android)
                     into(imageViewPatch)
                 }
 
             Picasso.get().load(launch.launchLink.flickrImages[0])
                 .apply {
-                    placeholder(R.drawable.loading_anim)
+                    placeholder(R.drawable.ic_android)
                     into(imageViewFlickr1)
                 }
 
             Picasso.get().load(launch.launchLink.flickrImages[1])
                 .apply {
-                    placeholder(R.drawable.loading_anim)
+                    placeholder(R.drawable.ic_android)
                     into(imageViewFlickr2)
                 }
             // endregion
