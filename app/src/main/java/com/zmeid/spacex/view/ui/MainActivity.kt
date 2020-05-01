@@ -47,13 +47,13 @@ class MainActivity : BaseActivity(), View.OnClickListener,
         val view = binding.root
         setContentView(view)
 
-        binding.recyclerviewLaunch.layoutManager = layoutManager
-        binding.recyclerviewLaunch.adapter = launchAdapter
+        binding.launchListHolder.recyclerviewLaunch.layoutManager = layoutManager
+        binding.launchListHolder.recyclerviewLaunch.adapter = launchAdapter
         setAdapterItemClickListener()
 
-        binding.buttonRetry.setOnClickListener(this)
+        binding.launchListHolder.buttonRetry.setOnClickListener(this)
 
-        binding.swipeRefreshLayout.setOnRefreshListener(this)
+        binding.launchListHolder.swipeRefreshLayout.setOnRefreshListener(this)
 
         mainActivityViewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(MainActivityViewModel::class.java)
@@ -81,12 +81,12 @@ class MainActivity : BaseActivity(), View.OnClickListener,
     private fun handleDefinitionResult(apiResponseWrapper: ApiResponseWrapper<List<Launch>>) {
         when (apiResponseWrapper.status) {
             ApiResponseWrapper.Status.LOADING -> {
-                showProgressBar(binding.progressBarMainActivity)
+                showProgressBar(binding.launchListHolder.progressBarMainActivity)
                 hideUserMessageText()
                 hideRetryButton()
             }
             ApiResponseWrapper.Status.SUCCESS -> {
-                hideProgressBar(binding.progressBarMainActivity)
+                hideProgressBar(binding.launchListHolder.progressBarMainActivity)
                 hideUserMessageText()
                 hideRetryButton()
                 val launchList = apiResponseWrapper.data!!
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity(), View.OnClickListener,
                 if (launchList.isEmpty()) showUserMessage(getString(R.string.api_response_empty))
             }
             ApiResponseWrapper.Status.ERROR -> {
-                hideProgressBar(binding.progressBarMainActivity)
+                hideProgressBar(binding.launchListHolder.progressBarMainActivity)
                 val errorMessage =
                     errorMessageGenerator.generateErrorMessage(apiResponseWrapper.exception!!)
                 launchAdapter.submitList(null)
@@ -108,27 +108,27 @@ class MainActivity : BaseActivity(), View.OnClickListener,
      * Shows a message to user in the center of activity.
      */
     private fun showUserMessage(message: String) {
-        binding.textViewUserMessage.apply {
+        binding.launchListHolder.textViewUserMessage.apply {
             text = message
             visibility = View.VISIBLE
         }
     }
 
     private fun hideUserMessageText() {
-        binding.textViewUserMessage.visibility = View.GONE
+        binding.launchListHolder.textViewUserMessage.visibility = View.GONE
     }
 
     private fun showRetryButton() {
-        binding.buttonRetry.visibility = View.VISIBLE
+        binding.launchListHolder.buttonRetry.visibility = View.VISIBLE
     }
 
     private fun hideRetryButton() {
-        binding.buttonRetry.visibility = View.GONE
+        binding.launchListHolder.buttonRetry.visibility = View.GONE
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.buttonRetry.id -> {
+            binding.launchListHolder.buttonRetry.id -> {
                 mainActivityViewModel.getLaunches(true)
             }
         }
@@ -139,7 +139,7 @@ class MainActivity : BaseActivity(), View.OnClickListener,
      */
     override fun onRefresh() {
         mainActivityViewModel.getLaunches(true)
-        binding.swipeRefreshLayout.isRefreshing = false
+        binding.launchListHolder.swipeRefreshLayout.isRefreshing = false
     }
 
     /**
