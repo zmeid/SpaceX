@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">SpaceX</string>
+    <string name="rocket_name_tag">Rocket name:</string>
+    <string name="launch_site_name_tag">Launch site name:</string>
+    <string name="launch_date_tag">Launch Date:</string>
+
+    <!-- region searchErrors -->
+    <string name="api_response_empty">API returned empty response :(</string>
+    <string name="there_is_an_error">There is an error :( \n {%1$s!}</string>
+    <string name="no_internet_error">I can\'t reach the host. Are you connected to internet?</string>
+    <string name="unauthorized_error">You are unauthorized to make API calls.</string>
+    <string name="http_404_not_found_error">I can\'t find the URL. Are API-URLs correct? </string>
+    <string name="retry">Retry</string>
+    <!-- endregion -->
 </resources>
