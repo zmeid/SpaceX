@@ -30,6 +30,8 @@ class MainActivityViewModel @Inject constructor(private val launchRepository: La
 
     /**
      * Asks repository to return launches and posts value to observers. Since it is an IO operation, it is done in [Dispatchers.IO] scope.
+     *
+     * If it is first initialization of [MainActivityViewModel] or if [forceRefresh] is true, an API call is mode.
      */
     fun getLaunches(forceRefresh: Boolean) {
         if (forceRefresh || launchApiResponseMutable.value == null) {
