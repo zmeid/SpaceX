@@ -1,16 +1,15 @@
 package com.zmeid.spacex.util
 
-import android.app.Activity
+import android.content.Context
 import com.zmeid.spacex.R
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.UnknownHostException
-import javax.inject.Inject
 
 /**
  * This class is to be injected where error messages need to be generated.
  */
-class ErrorMessageGenerator @Inject constructor(private val context: Activity) {
+class ErrorMessageGenerator constructor(private val context: Context) {
     /**
      * Generates error messages which are going to be displayed to user based on exception received.
      */

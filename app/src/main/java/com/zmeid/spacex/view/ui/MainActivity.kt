@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.squareup.picasso.Picasso
 import com.zmeid.spacex.R
 import com.zmeid.spacex.databinding.ActivityMainBinding
 import com.zmeid.spacex.model.Launch
@@ -32,7 +31,6 @@ class MainActivity : BaseActivity(), View.OnClickListener,
     @Inject lateinit var layoutManager: LinearLayoutManager
     @Inject lateinit var launchAdapter: LaunchAdapter
     @Inject lateinit var errorMessageGenerator: ErrorMessageGenerator
-    @Inject lateinit var picasso: Picasso
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainActivityViewModel: MainActivityViewModel

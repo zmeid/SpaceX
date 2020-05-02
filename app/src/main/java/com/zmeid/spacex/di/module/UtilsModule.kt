@@ -18,7 +18,5 @@ class UtilsModule {
     fun providesLayoutManager(context: Activity) = LinearLayoutManager(context)
 
     @Provides
-    fun providesPicasso(app: Application) = Picasso.Builder(app)
-        .loggingEnabled(true)
-        .build()
+    fun providesApiErrorMessageGenerator(context: Activity) = ErrorMessageGenerator(context)
 }
